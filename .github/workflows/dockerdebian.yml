@@ -1,7 +1,9 @@
 name: Docker Build (Debian)
 
 on:
-  push:
+ push:
+    branches:
+      - main
 
 jobs:
   build:
