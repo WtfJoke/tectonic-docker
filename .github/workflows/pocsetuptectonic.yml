@@ -33,7 +33,7 @@ jobs:
       - name: Upload pdf
         uses: actions/upload-artifact@v2
         with:
-          name: main
+          name: windows
           path: src\main.pdf
 
   buildunix:
@@ -61,4 +61,31 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: main
+          path: main.pdf
+
+  buildmac:
+    runs-on: macos-latest
+
+    steps:
+      - name: Export Tectonic cache path
+        run: echo TECTONIC_CACHE_PATH=~/Library/Caches/Tectonic >> $GITHUB_ENV
+      - name: Checkout
+        uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        name: Tectonic Cache
+        id: cache
+        with:
+          path: ${{ env.TECTONIC_CACHE_PATH }}
+          key: ${{ runner.os }}-tectonic-${{ hashFiles('**/*.tex') }}
+          restore-keys: |
+           ${{ runner.os }}-tectonic-
+      - uses: wtfjoke/setup-tectonic@develop
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Run Tectonic
+        run: tectonic main.tex
+      - name: Upload pdf
+        uses: actions/upload-artifact@v2
+        with:
+          name: mac
           path: main.pdf
