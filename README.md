@@ -17,6 +17,14 @@ Only **~75MB** compressed.
 A fully working latex engine. Packages that are not in the cache will be
 downloaded on demand.
 
+
+# Github
+In case you want to use this docker image in github.
+</br>
+Please check out and use my github action [WtfJoke/setup-tectonic](https://github.com/WtfJoke/setup-tectonic) instead. 
+
+The action performs better and supports individual caching (:zap:) of your downloaded tex packages.
+
 # Example: Gitlab CI
 
 Create a `.gitlab-ci.yml` with the following content for very fast
