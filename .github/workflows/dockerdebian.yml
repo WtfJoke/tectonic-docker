@@ -25,7 +25,7 @@ jobs:
           key: ${{ runner.os }}-tectonic-${{ hashFiles('**/*.tex') }}
           restore-keys: |
            ${{ runner.os }}-tectonic-
-      - uses: wtfjoke/setup-tectonic@v1
+      - uses: wtfjoke/setup-tectonic@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run Tectonic
@@ -54,11 +54,15 @@ jobs:
           key: ${{ runner.os }}-tectonic-${{ hashFiles('**/*.tex') }}
           restore-keys: |
            ${{ runner.os }}-tectonic-
-      - uses: wtfjoke/setup-tectonic@v1
+      - uses: wtfjoke/setup-tectonic@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-      - name: Run Tectonic
-        run: tectonic main.tex
+          biber-version: "latest"
+      - name: Run Tectonic + Biber
+        run: |
+          tectonic --keep-intermediates --reruns 0 main.tex
+          biber main
+          tectonic main.tex
       - name: Log exact cache hit
         run: echo ${{ steps.cache.outputs.cache-hit}}
       - name: Upload pdf
@@ -83,9 +87,14 @@ jobs:
           key: ${{ runner.os }}-tectonic-${{ hashFiles('**/*.tex') }}
           restore-keys: |
            ${{ runner.os }}-tectonic-
-      - uses: wtfjoke/setup-tectonic@v1
+      - uses: wtfjoke/setup-tectonic@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          biber-version: "latest"
+      - name: Run Tectonic (Prerun)
+        run: tectonic --keep-intermediates --reruns 0 main.tex
+      - name: Run Biber
+        run: biber main
       - name: Run Tectonic
         run: tectonic main.tex
       - name: Log exact cache hit
@@ -98,7 +107,7 @@ jobs:
   tectonic-version:
     runs-on: ubuntu-20.04
     steps:
-      - uses: wtfjoke/setup-tectonic@v1
+      - uses: wtfjoke/setup-tectonic@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           tectonic-version: 0.4.0
