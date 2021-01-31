@@ -25,7 +25,7 @@ jobs:
           key: ${{ runner.os }}-tectonic-${{ hashFiles('**/*.tex') }}
           restore-keys: |
            ${{ runner.os }}-tectonic-
-      - uses: wtfjoke/setup-tectonic@develop
+      - uses: wtfjoke/setup-tectonic@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run Tectonic
@@ -40,19 +40,17 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - name: Export Tectonic cache path
-        run: echo TECTONIC_CACHE_PATH=$HOME/.cache/Tectonic >> $GITHUB_ENV
       - name: Checkout
         uses: actions/checkout@v2
       - uses: actions/cache@v2
         name: Tectonic Cache
         id: cache
         with:
-          path: ${{ env.TECTONIC_CACHE_PATH }}
+          path: ~/.cache/Tectonic
           key: ${{ runner.os }}-tectonic-${{ hashFiles('**/*.tex') }}
           restore-keys: |
            ${{ runner.os }}-tectonic-
-      - uses: wtfjoke/setup-tectonic@develop
+      - uses: wtfjoke/setup-tectonic@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run Tectonic
@@ -67,19 +65,17 @@ jobs:
     runs-on: macos-latest
 
     steps:
-      - name: Export Tectonic cache path
-        run: echo TECTONIC_CACHE_PATH=~/Library/Caches/Tectonic >> $GITHUB_ENV
       - name: Checkout
         uses: actions/checkout@v2
       - uses: actions/cache@v2
         name: Tectonic Cache
         id: cache
         with:
-          path: ${{ env.TECTONIC_CACHE_PATH }}
+          path: ~/Library/Caches/Tectonic
           key: ${{ runner.os }}-tectonic-${{ hashFiles('**/*.tex') }}
           restore-keys: |
            ${{ runner.os }}-tectonic-
-      - uses: wtfjoke/setup-tectonic@develop
+      - uses: wtfjoke/setup-tectonic@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run Tectonic
@@ -92,7 +88,7 @@ jobs:
   tectonic-version:
     runs-on: ubuntu-20.04
     steps:
-      - uses: wtfjoke/setup-tectonic@develop
+      - uses: wtfjoke/setup-tectonic@main
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           tectonic-version: 0.4.0
