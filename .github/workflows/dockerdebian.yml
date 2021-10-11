@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        tectonic: ["0.7.1", "0.6.4"]
+        tectonic: ["0.7.1", "0.8.0"]
 
     steps:
       - name: Checkout
