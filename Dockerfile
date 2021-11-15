@@ -21,9 +21,9 @@ RUN biber main
 RUN for f in *.tex; do tectonic $f; done
 
 # use a lightweight debian - no need for whole rust environment
-FROM debian:buster-slim
+FROM debian:bullseye-slim
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends libfontconfig1 libgraphite2-3 libharfbuzz0b libicu63 zlib1g libharfbuzz-icu0 libssl1.1 ca-certificates \
+    && apt-get install -y --no-install-recommends libfontconfig1 libgraphite2-3 libharfbuzz0b libicu67 zlib1g libharfbuzz-icu0 libssl1.1 ca-certificates \
     && apt-get clean && rm -rf /var/lib/apt/lists/* 
 
 # copy tectonic binary to new image
