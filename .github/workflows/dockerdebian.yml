@@ -32,7 +32,7 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            dxjoke/tectonic-docker:${{ matrix.tectonic }}-buster-biber
+            dxjoke/tectonic-docker:${{ matrix.tectonic }}-bullseye-biber
   build-latest:
     runs-on: ubuntu-latest
 
@@ -56,5 +56,5 @@ jobs:
           platforms: linux/amd64
           push: true
           tags: |
-            dxjoke/tectonic-docker:latest-buster-biber
+            dxjoke/tectonic-docker:latest-bullseye-biber
             dxjoke/tectonic-docker:latest
