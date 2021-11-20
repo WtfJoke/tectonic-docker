@@ -4,6 +4,7 @@ on:
  push:
   branches:
     - main
+
  schedule:
   - cron: 0 0 1 * *
 
@@ -31,6 +32,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
+          build-args: |
+            version=${{ matrix.tectonic }}
           file: ./Dockerfile-${{ matrix.base-image }}
           platforms: linux/amd64
           push: true
