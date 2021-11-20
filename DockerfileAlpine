@@ -1,0 +1,34 @@
+FROM alpine:latest as builder
+
+ARG version
+
+RUN apk add build-base wget tar cargo harfbuzz-dev openssl-dev fontconfig-dev
+RUN cargo install tectonic ${version:+--vers "$version"} --features=external-harfbuzz
+
+WORKDIR /usr/src/tex
+RUN wget 'https://sourceforge.net/projects/biblatex-biber/files/biblatex-biber/2.14/binaries/Linux-musl/biber-linux_x86_64-musl.tar.gz'
+RUN tar -xvzf biber-linux_x86_64-musl.tar.gz
+RUN chmod +x biber
+RUN cp biber /usr/bin/biber
+RUN cp ~/.cargo/bin/tectonic /usr/bin/tectonic
+
+COPY *.tex ./
+COPY *.bib ./
+# first run - keep files for biber
+RUN tectonic --keep-intermediates --reruns 0 main.tex
+# do the biber
+RUN biber main
+# one last tectonic run over all files
+RUN for f in *.tex; do tectonic $f; done
+
+FROM alpine:latest
+# Install runtime dependencies
+RUN apk add harfbuzz fontconfig icu-libs
+# copy tectonic binary to new image
+COPY --from=builder /usr/bin/tectonic /usr/bin/
+# reuse tectonic cache from compiling tex files
+COPY --from=builder /root/.cache/Tectonic/ /root/.cache/Tectonic/
+# copy biber binary to new image
+COPY --from=builder /usr/bin/biber /usr/bin/ 
+
+WORKDIR /usr/src/tex
