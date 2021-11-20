@@ -4,6 +4,7 @@ on:
  push:
   branches:
     - main
+    - alpineNew
  schedule:
   - cron: 0 0 1 * *
 
@@ -12,6 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
+        base-image: ["bullseye", "alpine"]
         tectonic: ["0.7.1", "0.8.0"]
 
     steps:
@@ -30,11 +32,11 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./Dockerfile
+          file: ./Dockerfile-${{ matrix.base-image }}
           platforms: linux/amd64
           push: true
           tags: |
-            dxjoke/tectonic-docker:${{ matrix.tectonic }}-bullseye-biber
+            dxjoke/tectonic-docker:${{ matrix.tectonic }}-${{ matrix.base-image }}-biber
   build-latest:
     runs-on: ubuntu-latest
 
@@ -54,9 +56,33 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./Dockerfile
+          file: ./Dockerfile-bullseye
           platforms: linux/amd64
           push: true
           tags: |
             dxjoke/tectonic-docker:latest-bullseye-biber
             dxjoke/tectonic-docker:latest
+  build-latest-alpine:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile-alpine
+          platforms: linux/amd64
+          push: true
+          tags: |
+            dxjoke/tectonic-docker:latest-alpine-biber
