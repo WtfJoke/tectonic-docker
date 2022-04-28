@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         base-image: ["bullseye", "alpine"]
-        tectonic: ["0.9.0", "0.8.2", "0.8.0"]
+        tectonic: ["0.9.0", "0.8.2"]
 
     steps:
       - name: Checkout
