@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         base-image: ["bullseye", "alpine"]
-        tectonic: ["0.8.2", "0.8.0"]
+        tectonic: ["0.9.0", "0.8.2", "0.8.0"]
 
     steps:
       - name: Checkout
@@ -66,7 +66,7 @@ jobs:
             dxjoke/tectonic-docker:latest
   build-latest-alpine:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
