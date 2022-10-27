@@ -6,7 +6,7 @@ RUN apk add build-base wget tar cargo harfbuzz-dev openssl-dev fontconfig-dev
 RUN cargo install tectonic ${version:+--vers "$version"} --features=external-harfbuzz
 
 WORKDIR /usr/src/tex
-RUN wget 'https://sourceforge.net/projects/biblatex-biber/files/biblatex-biber/2.14/binaries/Linux-musl/biber-linux_x86_64-musl.tar.gz'
+RUN wget 'https://sourceforge.net/projects/biblatex-biber/files/biblatex-biber/2.16/binaries/Linux-musl/biber-linux_x86_64-musl.tar.gz'
 RUN tar -xvzf biber-linux_x86_64-musl.tar.gz
 RUN chmod +x biber
 RUN cp biber /usr/bin/biber
