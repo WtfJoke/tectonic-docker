@@ -55,34 +55,6 @@ pdf:
       - main.pdf
 ```
 
-# Example: Travis CI
-Create a `.travis.yml` file with, assuming the main tex file to be `main.tex`.
-If your `main.tex` file is in a subfolder (for example src/main.tex), adjust the second line to src=$TRAVIS_BUILD_DIR/mysubfolder (eg src=$TRAVIS_BUILD_DIR/src)
-
-```yaml
-sudo: required
-
-services:
-  - docker
-
-script:
- - docker run --mount src=$TRAVIS_BUILD_DIR,target=/usr/src/tex,type=bind dxjoke/tectonic-docker
-  /bin/sh -c "tectonic --keep-intermediates --reruns 0 main.tex; biber main; tectonic main.tex"
-```
-
-## Example: Travis CI (without biber)
-In case you dont need biber, you simply use this config with a slightly adjusted docker run:
-```yaml
-sudo: required
-
-services:
-  - docker
-
-script:
- - docker run --mount src=$TRAVIS_BUILD_DIR,target=/usr/src/tex,type=bind dxjoke/tectonic-docker
-  /bin/sh -c "tectonic main.tex"
-```
-
 ### Priming the cache
 
 After building tectonic, it is run on the tex files in this repo to
