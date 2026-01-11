@@ -3,7 +3,7 @@ FROM rust:bullseye AS builder
 ARG version
 
 RUN apt-get update && apt-get install -y libfontconfig1-dev libgraphite2-dev libharfbuzz-dev libicu-dev zlib1g-dev
-RUN cargo install tectonic ${version:+--vers "$version"}
+RUN cargo install tectonic ${version:+--vers "$version"} --features=external-harfbuzz
 
 WORKDIR /usr/src/tex
 RUN wget 'https://sourceforge.net/projects/biblatex-biber/files/biblatex-biber/2.17/binaries/Linux/biber-linux_x86_64.tar.gz'
