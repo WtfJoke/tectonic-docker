@@ -31,6 +31,15 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Docker metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: dxjoke/tectonic-docker
+          tags: |
+            type=raw,value=${{ matrix.tectonic }}-${{ matrix.base-image }}-biber
+            type=raw,value=latest-${{ matrix.base-image }}-biber,enable=${{ matrix.tectonic == env.LATEST_TECTONIC_VERSION }}
+            type=raw,value=latest,enable=${{ matrix.tectonic == env.LATEST_TECTONIC_VERSION && matrix.base-image == 'bullseye' }}
       - name: Build and push
         uses: docker/build-push-action@v6
         continue-on-error: true
@@ -41,16 +50,5 @@ jobs:
           file: ./Dockerfile-${{ matrix.base-image }}
           platforms: linux/amd64
           push: true
-          tags: |
-            dxjoke/tectonic-docker:${{ matrix.tectonic }}-${{ matrix.base-image }}-biber
-      - name: Tag as latest and push
-        if: matrix.tectonic == env.LATEST_TECTONIC_VERSION
-        run: |
-          SOURCE_IMAGE=dxjoke/tectonic-docker:${{ matrix.tectonic }}-${{ matrix.base-image }}-biber
-          docker tag $SOURCE_IMAGE dxjoke/tectonic-docker:latest-${{ matrix.base-image }}-biber
-          docker push dxjoke/tectonic-docker:latest-${{ matrix.base-image }}-biber
-          
-          if [ "${{ matrix.base-image }}" == "bullseye" ]; then
-            docker tag $SOURCE_IMAGE dxjoke/tectonic-docker:latest
-            docker push dxjoke/tectonic-docker:latest
-          fi
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
