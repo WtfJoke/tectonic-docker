@@ -1,4 +1,4 @@
-FROM rust:bullseye as builder
+FROM rust:bullseye AS builder
 
 ARG version
 
