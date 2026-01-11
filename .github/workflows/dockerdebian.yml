@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        base-image: ["bullseye", "alpine"]
+        base-image: ["trixie", "alpine"]
         tectonic: ["0.14.1", "0.15.0"]
 
     steps:
@@ -59,11 +59,11 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           context: .
-          file: ./Dockerfile-bullseye
+          file: ./Dockerfile-trixie
           platforms: linux/amd64
           push: true
           tags: |
-            dxjoke/tectonic-docker:latest-bullseye-biber
+            dxjoke/tectonic-docker:latest-trixie-biber
             dxjoke/tectonic-docker:latest
   build-latest-alpine:
     runs-on: ubuntu-latest

@@ -1,8 +1,9 @@
-FROM rust:bullseye AS builder
+FROM rust:trixie AS builder
 
 ARG version
 
 RUN apt-get update && apt-get install -y libfontconfig1-dev libgraphite2-dev libharfbuzz-dev libicu-dev zlib1g-dev
+ENV CXXFLAGS="-std=c++17"
 RUN cargo install tectonic ${version:+--vers "$version"} --features=external-harfbuzz
 
 WORKDIR /usr/src/tex
@@ -21,9 +22,9 @@ RUN biber main
 RUN for f in *.tex; do tectonic $f; done
 
 # use a lightweight debian - no need for whole rust environment
-FROM debian:bullseye-slim
+FROM debian:trixie-slim
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends libfontconfig1 libgraphite2-3 libharfbuzz0b libicu67 zlib1g libharfbuzz-icu0 libssl1.1 ca-certificates \
+    && apt-get install -y --no-install-recommends libfontconfig1 libgraphite2-3 libharfbuzz0b libicu76 zlib1g libharfbuzz-icu0 libssl3t64 ca-certificates \
     && apt-get clean && rm -rf /var/lib/apt/lists/* 
 
 # copy tectonic binary to new image
