@@ -42,7 +42,6 @@ jobs:
             type=raw,value=latest,enable=${{ matrix.tectonic == env.LATEST_TECTONIC_VERSION && matrix.base-image == 'bullseye' }}
       - name: Build and push
         uses: docker/build-push-action@v6
-        continue-on-error: true
         with:
           context: .
           build-args: |
